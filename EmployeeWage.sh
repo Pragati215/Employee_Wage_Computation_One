@@ -34,7 +34,6 @@ case $ch in
     *)echo "wrong choice";;
 esac
 
-
 EMPLOYEE_RATE_PER_HOUR=100
 FULL_TIME=8
 PART_TIME=4
@@ -44,11 +43,22 @@ MAX_NO_OF_HOURS=120
 total_working_hours=0
 totalWorkingDays=0
 totalWage=0
+workDonePerDay=0
+
+getWorkDonePerDay() {
+        case $1 in
+                0) workDonePerDay=$PART_TIME;;
+                1) workDonePerDay=$FULL_TIME;;
+                *) workDonePerDay=0;;
+        esac
+        echo $workDonePerDay
+}
 while [[ $totalWorkingDays -lt $MAX_NO_OF_DAYS && $total_working_hours -lt $MAX_NO_OF_HOURS ]]
 do
         ((totalWorkingDays++));
-        total_working_hours=$((total_working_hours+FULL_TIME));
-        tempWage=$((FULL_TIME*EMPLOYEE_RATE_PER_HOUR));
+        workDonePerDay=$(getWorkDonePerDay $((RANDOM%2)) );
+        total_working_hours=$((total_working_hours+workDonePerDay));
+        tempWage=$((workDonePerDay*EMPLOYEE_RATE_PER_HOUR));
         totalWage=$((tempWage+totalWage));
 
 done
